@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "1",
+    "name": "پیتزا پپرونی",
+    "description": "کالباس-پنیر پیتزا-قارچ-سس کچاپ",
+    "images": ["/images/peperoni.png", "/images/peperoni-2.jpg"],
+    "price": [
+      { "size": "1 نفره", "p": 150000 },
+      { "size": "2 نفره", "p": 220000 },
+      { "size": "خانواده", "p": 300000 }
+    ],
+    "sizes": [
+      { "label": "1 نفره" },
+      { "label": "2 نفره" },
+      { "label": "خانواده" }
+    ],
+    "category": "پیتزا",
+    "discount": [{ "size": "خانواده", "amount": 5 }]
+  },
+  {
+    "_id": "2",
+    "name": "برگر مخصوص",
+    "description": "گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک",
+    "images": ["/images/burger.png", "/images/burger-2.jpg"],
+    "price": 200000,
+    "category": "برگر",
+    "discount": 5,
+    "isOutOfStock": true
+  },
+  {
+    "_id": "3",
+    "name": "میلک شیک توت فرنگی",
+    "description": "بستنی-توت فرنگی-خامه-یخ",
+    "images": ["/images/milkshake.png", "/images/milkshake-2.jpg"],
+    "price": [
+      { "size": "بزرگ", "p": 150000 },
+      { "size": "کوچک", "p": 110000 }
+    ],
+    "sizes": [{ "label": "بزرگ" }, { "label": "کوچک" }],
+    "category": "میلک شیک",
+    "discount": [
+      { "size": "بزرگ", "amount": 5 },
+      { "size": "کوچک", "amount": 10 }
+    ]
+  }
+]

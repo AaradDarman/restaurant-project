@@ -1,0 +1,53 @@
+[
+  {
+    "_id": "1",
+    "name": "1",
+    "seatingCapacity": 2,
+    "isReserved": true
+  },
+  {
+    "_id": "2",
+    "name": "2",
+    "seatingCapacity": 4
+  },
+  {
+    "_id": "3",
+    "name": "3",
+    "seatingCapacity": 6
+  },
+  {
+    "_id": "4",
+    "name": "4",
+    "seatingCapacity": 5
+  },
+  {
+    "_id": "5",
+    "name": "5",
+    "seatingCapacity": 4
+  },
+  {
+    "_id": "6",
+    "name": "6",
+    "seatingCapacity": 6
+  },
+  {
+    "_id": "7",
+    "name": "7",
+    "seatingCapacity": 5
+  },
+  {
+    "_id": "8",
+    "name": "8",
+    "seatingCapacity": 4
+  },
+  {
+    "_id": "9",
+    "name": "9",
+    "seatingCapacity": 5
+  },
+  {
+    "_id": "10",
+    "name": "10",
+    "seatingCapacity": 2
+  }
+]
