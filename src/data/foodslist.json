@@ -20,7 +20,7 @@
   {
     "_id": "2",
     "name": "برگر مخصوص",
-    "description": "گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مکگوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک",
+    "description": "گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک",
     "images": ["/images/burger.png", "/images/burger-2.jpg"],
     "price": 200000,
     "category": "برگر",
@@ -83,5 +83,63 @@
     "price": 50000,
     "category": "نوشیدنی گرم",
     "discount": 5
+  },
+  {
+    "_id": "8",
+    "name": "پیتزا هاوانا",
+    "description": "کالباس-پنیر پیتزا-قارچ-سس کچاپ",
+    "images": ["/images/havana-pizza.png", "/images/havana-pizza-2.jpg"],
+    "price": [
+      { "size": "1 نفره", "p": 150000 },
+      { "size": "2 نفره", "p": 220000 },
+      { "size": "خانواده", "p": 300000 }
+    ],
+    "sizes": [
+      { "label": "1 نفره" },
+      { "label": "2 نفره" },
+      { "label": "خانواده" }
+    ],
+    "category": "پیتزا",
+    "discount": [{ "size": "خانواده", "amount": 5 }]
+  },
+  {
+    "_id": "9",
+    "name": "سالاد سزار",
+    "description": "کاهو-گوجه-کالباس-زیتون-سس سزار",
+    "images": ["/images/caesar-salad.png", "/images/caesar-salad-2.jpg"],
+    "price": 150000,
+    "category": "سالاد"
+  },
+  {
+    "_id": "10",
+    "name": "سالاد فصل",
+    "description": "کاهو-گوجه-کالباس-زیتون-پیاز-هویج",
+    "images": ["/images/season-salad.png", "/images/season-salad-2.jpg"],
+    "price": 55000,
+    "category": "سالاد"
+  },
+  {
+    "_id": "11",
+    "name": "چیکن وینگز",
+    "description": "بال و کتف-سس مخصوص",
+    "images": ["/images/chicken-wings.png", "/images/chicken-wings-2.jpg"],
+    "price": 180000,
+    "category": "پیش غذا"
+  },
+  {
+    "_id": "12",
+    "name": "سیب زمینی سرخ شده",
+    "description": "سیب زمینی-سس کچاپ",
+    "images": ["/images/french-fries.png", "/images/french-fries-2.jpg"],
+    "price": 40000,
+    "category": "پیش غذا"
+  },
+  {
+    "_id": "13",
+    "name": "برگر ذغالی",
+    "description": "گوشت گوسفندی-کاهو-گوجه-سس مخصوص-نان مک",
+    "images": ["/images/zoghali-burger.png", "/images/zoghali-burger-2.jpg"],
+    "price": 40000,
+    "category": "برگر"
   }
 ]
