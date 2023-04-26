@@ -2,7 +2,7 @@ export type TSize = {
   label: string;
   height?: number;
   diameter?: number;
-  content?: string;
+  amount?: string;
 };
 
 export type TPrice = {
@@ -12,7 +12,7 @@ export type TPrice = {
 
 export type TIsOutOfStock = boolean;
 
-export type TDiscount = {
+export type TDiscount = { 
   size: string;
   amount: number;
 };

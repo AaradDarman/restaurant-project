@@ -141,5 +141,21 @@
     "images": ["/images/zoghali-burger.png", "/images/zoghali-burger-2.jpg"],
     "price": 40000,
     "category": "برگر"
+  },
+  {
+    "_id": "14",
+    "name": "آیس پک توت فرنگی",
+    "description": "بستنی-توت فرنگی-خامه-اسمارتیز",
+    "images": ["/images/icepack.png", "/images/icepack-2.jpg"],
+    "price": 40000,
+    "category": "آیس پک"
+  },
+  {
+    "_id": "15",
+    "name": "چای زعفرانی",
+    "description": "چای-زعفران",
+    "images": ["/images/tea.png", "/images/tea-2.jpg"],
+    "price": 20000,
+    "category": "دمنوش"
   }
 ]

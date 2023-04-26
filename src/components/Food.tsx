@@ -83,7 +83,7 @@ const Food: FC<
             className="py-1 text-[10px] text-primary-500 sm:text-[12px]"
           />
         </div>
-        <div className="flex justify-between mt-auto">
+        <div className="mt-auto flex justify-between">
           {isOutOfStock ? (
             <Typography variant="caption">ناموجود</Typography>
           ) : (
