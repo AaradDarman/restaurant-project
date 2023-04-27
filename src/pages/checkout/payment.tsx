@@ -6,7 +6,7 @@ import {
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Divider, IconButton, Typography } from "@mui/material";
+import { Divider, FormHelperText, IconButton, Typography } from "@mui/material";
 import Cookies from "cookies";
 import Head from "next/head";
 
@@ -95,6 +95,14 @@ const Payment = () => {
               }}
               className="!mx-1"
             />
+            <FormHelperText
+              className="!mr-[14px]"
+              sx={{ color: "warning.light" }}
+            >
+              {paymentMethod === "حضوری"
+                ? "در صورت عدم پرداخت تا 3 دقیقه پس از ثبت، سفارش شما لغو خواهد شد."
+                : " "}
+            </FormHelperText>
           </div>
 
           {eatMethod === "بیرون بری" ? null : (
