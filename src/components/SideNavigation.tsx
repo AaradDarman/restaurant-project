@@ -57,12 +57,14 @@ const NavItem = ({ item, className }: any) => {
   const router = useRouter();
   const { cart } = useSelector((state: RootState) => state);
   const { isLg } = useBreakpoints();
+  let categoryPath = router.pathname.includes("/[category]");
   const indexRouteCondition =
-    router.pathname.includes("/[category]") ||
-    (router.pathname === "/" && item.title === "صفحه اصلی");
+    (router.pathname === "/" || categoryPath) && item.title === "صفحه اصلی";
+  console.log(indexRouteCondition);
 
   const cartRouteCondition =
     router.pathname.includes("checkout") && item.title === "سبد خرید";
+  console.log(cartRouteCondition);
 
   const profileRouteCondition =
     router.pathname.includes("profile") && item.title === "پروفایل" && !isLg;
