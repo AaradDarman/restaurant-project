@@ -60,15 +60,12 @@ const NavItem = ({ item, className }: any) => {
   let categoryPath = router.pathname.includes("/[category]");
   const indexRouteCondition =
     (router.pathname === "/" || categoryPath) && item.title === "صفحه اصلی";
-  console.log(indexRouteCondition);
 
   const cartRouteCondition =
     router.pathname.includes("checkout") && item.title === "سبد خرید";
-  console.log(cartRouteCondition);
 
   const profileRouteCondition =
     router.pathname.includes("profile") && item.title === "پروفایل" && !isLg;
-  console.log(profileRouteCondition);
 
   return (
     <Link

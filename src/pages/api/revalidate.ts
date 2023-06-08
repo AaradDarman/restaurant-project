@@ -1,12 +1,14 @@
 import { decodeToken } from "utils/token-helper";
 
 export default async function handler(req: any, res: any) {
-  let decodedToken = decodeToken(req.query.secret);
+  console.log("REVALIDATE");
+  console.log(req.query.secret);
+  let decodedToken = await decodeToken(req.query.secret);
+  console.log(decodeToken);
 
   if (!decodedToken) {
     return res.status(401).json({ message: "Invalid token" });
   }
-
   console.log((decodedToken as any).paths);
 
   try {
@@ -18,6 +20,8 @@ export default async function handler(req: any, res: any) {
 
     return res.json({ revalidated: true });
   } catch (err) {
+    console.log(err);
+
     return res.status(500).send("Error revalidating");
   }
 }

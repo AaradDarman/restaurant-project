@@ -3,8 +3,11 @@ import * as jose from "jose";
 import { TUser } from "types/auth.types";
 
 export const decodeToken = async (
-  token: string
-): Promise<jose.JWTPayload & { user?: TUser }> => {
+  token: string | undefined
+): Promise<(jose.JWTPayload & { user?: TUser }) | undefined> => {
+  if (token === undefined) {
+    return undefined;
+  }
   const { payload } = await jose.jwtVerify(
     token,
     new TextEncoder().encode(`sokolows`)
