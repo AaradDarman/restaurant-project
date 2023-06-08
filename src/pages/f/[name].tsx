@@ -253,9 +253,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { data } = await foodApi.getfood(
-    convetUrlToStringFormat(params?.name as string)
-  );
+  let t = convetUrlToStringFormat(params?.name as string);
+  const { data } = await foodApi.getfood(t as string);
 
   return {
     props: {

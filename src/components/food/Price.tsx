@@ -15,7 +15,7 @@ const Price: FC<{
 }> = ({ item, priceClassName, discountedPriceClassName, selectedSize }) => {
   const { price, discount, discountedPrice } = useFoodCalculation({
     item,
-    selectedSize,
+    selectedSize: selectedSize?.label,
   });
 
   return (
