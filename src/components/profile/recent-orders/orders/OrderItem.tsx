@@ -9,13 +9,16 @@ import moment from "moment-jalaali";
 import Icon from "components/shared/Icon";
 import { IOrder } from "interfaces/order.interfaces";
 import { numberWithCommas } from "utils/number-helper";
+import Link from "next/link";
 
 const OrderItem: FC<{ item: IOrder }> = ({
-  item: { createAt, items, totalPrice },
+  item: { createAt, items, totalPrice, orderNumber },
 }) => {
-
   return (
-    <div className="my-1 flex h-[77px] items-center rounded-2xl bg-primary-main px-3 py-4">
+    <Link
+      href={`/profile/recent-orders/${orderNumber}`}
+      className="my-1 flex h-[77px] items-center rounded-2xl bg-primary-main px-3 py-4"
+    >
       <div className="flex shrink-0 flex-col items-start">
         <Typography variant="caption" className="py-1">
           <Icon icon="calendar" size={10} className="ml-1" />
@@ -30,7 +33,7 @@ const OrderItem: FC<{ item: IOrder }> = ({
       </div>
       <ResponsiveEllipsis
         text={items
-          .map((item) => `${item.name} ${item?.size?.label ?? ""}`)
+          .map((item) => `${item.name} ${item?.size ?? ""}`)
           .join(" , ")}
         maxLine="3"
         ellipsis="..."
@@ -54,14 +57,14 @@ const OrderItem: FC<{ item: IOrder }> = ({
         >
           {items.map((item) => (
             <Avatar
-              key={`${item.name}-${item?.size?.label}`}
+              key={`${item.name}-${item?.size}`}
               alt={item.name}
               src={item.images[0]}
             />
           ))}
         </AvatarGroup>
       </div>
-    </div>
+    </Link>
   );
 };
 

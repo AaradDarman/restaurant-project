@@ -58,13 +58,15 @@ const NavItem = ({ item, className }: any) => {
   const { cart } = useSelector((state: RootState) => state);
   const { isLg } = useBreakpoints();
   const indexRouteCondition =
-    router.pathname.includes("/[category]") && item.title === "صفحه اصلی";
+    router.pathname.includes("/[category]") ||
+    (router.pathname === "/" && item.title === "صفحه اصلی");
 
   const cartRouteCondition =
     router.pathname.includes("checkout") && item.title === "سبد خرید";
 
   const profileRouteCondition =
     router.pathname.includes("profile") && item.title === "پروفایل" && !isLg;
+  console.log(profileRouteCondition);
 
   return (
     <Link
@@ -72,11 +74,13 @@ const NavItem = ({ item, className }: any) => {
       className={clsx(
         cartRouteCondition
           ? activeStyle
-          : profileRouteCondition
-          ? activeStyle
           : indexRouteCondition
           ? activeStyle
-          : router.pathname === item.href && activeStyle,
+          : profileRouteCondition
+          ? activeStyle
+          : router.pathname.includes(item.href) &&
+            item.href != "/" &&
+            activeStyle,
         className,
         `relative flex items-center rounded-xl`,
         `[&:not(.active)]:hover:bg-primary-main/20`

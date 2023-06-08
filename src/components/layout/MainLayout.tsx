@@ -6,9 +6,19 @@ import Header from "components/header";
 import BottomNavigation from "components/footer/BottomNavigation";
 import BookingContext from "context/BookingContext";
 import SideNavigation from "components/SideNavigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import userApi from "api/userApi";
+import { setUser } from "redux/slices/user";
+import { loadState } from "utils/browser-storage-helper";
+import { setLocalCartItems, syncCartToDb } from "redux/slices/cart";
+import { isEmpty } from "lodash";
+import { useAuthContext } from "context/auth-context";
 
 const MainLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
+  const { getUserData } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state);
 
   useEffect(() => {
     const onResize = () => {
@@ -22,6 +32,13 @@ const MainLayout = ({ children }: PropsWithChildren) => {
       window.removeEventListener("resize", onResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (isEmpty(user?.user)) {
+      getUserData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.user]);
 
   return (
     <>

@@ -1,86 +1,76 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { TFoodItem } from "interfaces/food.interfaces";
+import userApi from "api/userApi";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { ICartItemProp, TFoodItem } from "interfaces/food.interfaces";
 import { ICartState } from "interfaces/order.interfaces";
 import { isEqual } from "lodash";
 import { toast } from "react-toastify";
+import { MyKnownError } from "types/error.types";
+import { cleanStorage } from "utils/browser-storage-helper";
 
-// import { cleanStorage } from "utils/browser-storage";
+export const addItemToDbCart = createAsyncThunk<
+  { items: ICartState["items"] },
+  { item: ICartItemProp },
+  {
+    rejectValue: MyKnownError;
+  }
+>("cart/addItemToDbCart", async ({ item }, thunkApi) => {
+  try {
+    const response = await userApi.addItemToBasket(item);
+    return { items: response.data.basket };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
 
-// import api from "adapters/adapter";
-// import basketApi from "adapters/basket-adapter";
+export const removeItemFromDbCart = createAsyncThunk<
+  { items: ICartState["items"] },
+  Pick<ICartItemProp, "_id" | "quantity" | "size">,
+  {
+    rejectValue: MyKnownError;
+  }
+>("cart/removeItemFromDbCart", async (item, thunkApi) => {
+  try {
+    const response = await userApi.removeItemFromBasket(item);
+    return { items: response.data.basket };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
 
-// export const getUserCartItems = createAsyncThunk(
-//   "cart/getItems",
-//   async (userId) => {
-//     try {
-//       const { status, data } = await api.getBasket(userId);
-//       if (status === 200) {
-//         return data.basket;
-//       }
-//     } catch (e: any) {
-//       toast.error(e?.response?.data?.message, {
-//         position: "bottom-center",
-//         closeOnClick: true,
-//       });
-//     }
-//   }
-// );
-
-// export const syncCartToDb = createAsyncThunk(
-//   "cart/cyncItemsToDb",
-//   async (items) => {
-//     try {
-//       const { status, data } = await basketApi.syncBasket({ items });
-//       if (status === 200) {
-//         cleanStorage();
-//         return data.basketItems;
-//       }
-//     } catch (e: any) {
-//       toast.error(e?.response?.data?.message, {
-//         position: "bottom-center",
-//         closeOnClick: true,
-//       });
-//     }
-//   }
-// );
-
-// export const addItemToDbCart = createAsyncThunk(
-//   "cart/addItemsTodb",
-//   async ({ item, userId }, { rejectWithValue }) => {
-//     try {
-//       const { status, data } = await basketApi.addToBasket({ item, userId });
-//       if (status === 200) {
-//         return data.basket;
-//       }
-//     } catch (e: any) {
-//       toast.error(e?.response?.data?.message, {
-//         position: "bottom-center",
-//         closeOnClick: true,
-//       });
-//       return rejectWithValue(e?.response?.data);
-//     }
-//   }
-// );
-
-// export const removeItemFromDbCart = createAsyncThunk(
-//   "cart/removeItemsFromdb",
-//   async ({ item, userId }) => {
-//     try {
-//       const { status, data } = await basketApi.removeFromBasket({
-//         item,
-//         userId,
-//       });
-//       if (status === 200) {
-//         return data.basket;
-//       }
-//     } catch (e: any) {
-//       toast.error(e?.response?.data?.message, {
-//         position: "bottom-center",
-//         closeOnClick: true,
-//       });
-//     }
-//   }
-// );
+export const syncCartToDb = createAsyncThunk<
+  { items: ICartState["items"] },
+  ICartState["items"],
+  {
+    rejectValue: MyKnownError;
+  }
+>("cart/syncCartToDb", async (items, thunkApi) => {
+  try {
+    const response = await userApi.syncCartToDb(items);
+    await cleanStorage();
+    return { items: response.data.basket };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
 
 const initialState: ICartState = {
   status: "idle",
@@ -245,94 +235,92 @@ const cartSlice = createSlice({
       state.reserveTable = undefined;
     },
   },
-  extraReducers: {
-    // [getUserCartItems.fulfilled]: (state, action) => {
-    //   state.items = action.payload;
-    //   state.itemsCount = action.payload.length;
-    //   state.totalPrice = state.items.reduce(
-    //     (total, item) => item.price * item.quantity + total,
-    //     0
-    //   );
-    //   state.status = "idle";
-    // },
-    // [getUserCartItems.pending]: (state, action) => {
-    //   state.status = "loading";
-    // },
-    // [syncCartToDb.fulfilled]: (state, action) => {
-    //   state.items = action.payload;
-    //   state.itemsCount = action.payload
-    //     .map((item) => item.quantity)
-    //     .reduce((a, b) => a + b, 0);
-    //   state.totalPrice = state.items.reduce(
-    //     (total, item) => item.price * item.quantity + total,
-    //     0
-    //   );
-    //   state.totalPriceWithDiscount = state.items.reduce((total, item) => {
-    //     if (item.discount) {
-    //       return (
-    //         (item.price - (item.price * item.discount) / 100) * item.quantity +
-    //         total
-    //       );
-    //     } else {
-    //       return item.price * item.quantity + total;
-    //     }
-    //   }, 0);
-    //   state.status = "idle";
-    // },
-    // [syncCartToDb.pending]: (state, action) => {
-    //   state.status = "loading";
-    // },
-    // [addItemToDbCart.fulfilled]: (state, action) => {
-    //   state.items = action.payload;
-    //   state.itemsCount = action.payload
-    //     .map((item) => item.quantity)
-    //     .reduce((a, b) => a + b, 0);
-    //   state.totalPrice = state.items.reduce(
-    //     (total, item) => item.price * item.quantity + total,
-    //     0
-    //   );
-    //   state.totalPriceWithDiscount = state.items.reduce((total, item) => {
-    //     if (item.discount) {
-    //       return (
-    //         (item.price - (item.price * item.discount) / 100) * item.quantity +
-    //         total
-    //       );
-    //     } else {
-    //       return item.price * item.quantity + total;
-    //     }
-    //   }, 0);
-    //   state.status = "idle";
-    // },
-    // [addItemToDbCart.pending]: (state, action) => {
-    //   state.status = "loading";
-    // },
-    // [addItemToDbCart.rejected]: (state, action) => {
-    //   state.status = "idle";
-    // },
-    // [removeItemFromDbCart.fulfilled]: (state, action) => {
-    //   state.items = action.payload;
-    //   state.itemsCount = action.payload
-    //     .map((item) => item.quantity)
-    //     .reduce((a, b) => a + b, 0);
-    //   state.totalPrice = state.items.reduce(
-    //     (total, item) => item.price * item.quantity + total,
-    //     0
-    //   );
-    //   state.totalPriceWithDiscount = state.items.reduce((total, item) => {
-    //     if (item.discount) {
-    //       return (
-    //         (item.price - (item.price * item.discount) / 100) * item.quantity +
-    //         total
-    //       );
-    //     } else {
-    //       return item.price * item.quantity + total;
-    //     }
-    //   }, 0);
-    //   state.status = "idle";
-    // },
-    // [removeItemFromDbCart.pending]: (state, action) => {
-    //   state.status = "loading";
-    // },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addItemToDbCart.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        state.itemsCount = action.payload.items
+          .map((item) => item.quantity)
+          .reduce((a, b) => a + b, 0);
+        state.totalPrice = state.items.reduce(
+          (total, item) => item.price * item.quantity + total,
+          0
+        );
+        state.totalPriceWithDiscount = state.items.reduce((total, item) => {
+          if (item.discount) {
+            return (
+              (item.price - (item.price * item.discount) / 100) *
+                item.quantity +
+              total
+            );
+          } else {
+            return item.price * item.quantity + total;
+          }
+        }, 0);
+        state.status = "idle";
+      })
+      .addCase(addItemToDbCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addItemToDbCart.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(removeItemFromDbCart.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        state.itemsCount = action.payload.items
+          .map((item) => item.quantity)
+          .reduce((a, b) => a + b, 0);
+        state.totalPrice = state.items.reduce(
+          (total, item) => item.price * item.quantity + total,
+          0
+        );
+        state.totalPriceWithDiscount = state.items.reduce((total, item) => {
+          if (item.discount) {
+            return (
+              (item.price - (item.price * item.discount) / 100) *
+                item.quantity +
+              total
+            );
+          } else {
+            return item.price * item.quantity + total;
+          }
+        }, 0);
+        state.status = "idle";
+      })
+      .addCase(removeItemFromDbCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(removeItemFromDbCart.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(syncCartToDb.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        state.itemsCount = action.payload.items
+          .map((item) => item.quantity)
+          .reduce((a, b) => a + b, 0);
+        state.totalPrice = state.items.reduce(
+          (total, item) => item.price * item.quantity + total,
+          0
+        );
+        state.totalPriceWithDiscount = state.items.reduce((total, item) => {
+          if (item.discount) {
+            return (
+              (item.price - (item.price * item.discount) / 100) *
+                item.quantity +
+              total
+            );
+          } else {
+            return item.price * item.quantity + total;
+          }
+        }, 0);
+        state.status = "idle";
+      })
+      .addCase(syncCartToDb.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(syncCartToDb.rejected, (state) => {
+        state.status = "idle";
+      });
   },
 });
 export const {

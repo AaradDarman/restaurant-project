@@ -13,7 +13,7 @@ export interface IOrder {
     _id: string;
     name: string;
     quantity: number;
-    size?: TSize;
+    size?: string;
     discount?: number;
     images: string[];
     price: number;
@@ -23,17 +23,21 @@ export interface IOrder {
   customerId: string;
   paymentMethod: TPaymentType;
   transactionDetails?: Array<TTransactionDetail>;
-  bookDetail?: TBook;
+  bookDetail?: TTable & {
+    date: string;
+  };
+  eatMethod: "سالن" | "بیرون بری";
+  table?: TTable;
 }
 
 interface ICartStateItem {
   _id: string;
   name: string;
-  price: number;
-  size?: TSize;
-  discount: number;
   quantity: number;
-  image: string;
+  size?: string;
+  discount?: number;
+  images: string[];
+  price: number;
 }
 
 export interface ICartState {

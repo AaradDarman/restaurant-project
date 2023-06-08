@@ -16,6 +16,8 @@ import AuthContext from "context/AuthContext";
 import AccountInfoForm from "components/profile/account-info/AccountInfoForm";
 import Icon from "components/shared/Icon";
 import useBreakpoints from "hooks/useBreakPoints";
+import Cookies from "cookies";
+import { GetServerSideProps } from "next";
 
 const AccountInfo = () => {
   const { user } = useSelector((state: RootState) => state);
@@ -133,20 +135,20 @@ AccountInfo.getLayout = function getLayout(page: JSX.Element) {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const cookies = new Cookies(ctx.req, ctx.res);
-//   const authorization = cookies.get("authorization");
-//   if (!authorization) {
-//     return {
-//       redirect: {
-//         destination: `/auth?returnUrl=${ctx.resolvedUrl}&forceLogout=true`,
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = new Cookies(ctx.req, ctx.res);
+  const authorization = cookies.get("authorization");
+  if (!authorization) {
+    return {
+      redirect: {
+        destination: `/auth?returnUrl=${ctx.resolvedUrl}&forceLogout=true`,
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};
 
 export default AccountInfo;

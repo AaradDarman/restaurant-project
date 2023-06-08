@@ -1,11 +1,19 @@
 import jwt from "jsonwebtoken";
+import * as jose from "jose";
+import { TUser } from "types/auth.types";
 
-export const decodeToken = (token: string) => {
-  try {
-    return jwt.verify(token, "sokolows", { complete: true }).payload;
-  } catch (error) {
-    console.log(error);
-  }
+export const decodeToken = async (
+  token: string
+): Promise<jose.JWTPayload & { user?: TUser }> => {
+  const { payload } = await jose.jwtVerify(
+    token,
+    new TextEncoder().encode(`sokolows`)
+  );
+  return payload;
+  //   try {
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 export const getToken = (key: string) => {

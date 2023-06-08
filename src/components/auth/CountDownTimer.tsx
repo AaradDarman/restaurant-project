@@ -21,10 +21,6 @@ const CountDownTimer: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate]);
 
-  useEffect(() => {
-    console.log("rere");
-  }, []);
-
   const handleRestart = () => {
     restart(moment(startDate).add(duration, "millisecond").toDate());
   };
@@ -43,7 +39,7 @@ const CountDownTimer: FC<{
         </div>
       ) : (
         <button
-          className="min-h-[24px] text-[11px]"
+          className="min-h-[24px] cursor-pointer text-[11px]"
           onClick={() => {
             onRestartClick();
           }}

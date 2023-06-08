@@ -35,7 +35,7 @@ const ItemsList: FC<{ items: Array<ICartItemProp> }> = ({ items }) => {
             initial="offscreen"
             animate="onscreen"
             exit="offscreen"
-            key={`${item.name}-${item?.size?.label}`}
+            key={`${item.name}-${item?.size}`}
             className="md:col-span-4 md:h-fit lg:col-span-2"
           >
             <CartItem item={item} />

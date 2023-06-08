@@ -80,7 +80,7 @@ const OtpSection = () => {
             />
             <FormHelperText
               error={!!errors.otp && touched.otp}
-              className="!ml-[14px] !mr-[14px] lg:!mr-[276px]"
+              className="!ml-[14px] !mr-[14px] lg:!ml-auto"
             >
               {errors.otp && touched.otp ? errors.otp : " "}
             </FormHelperText>

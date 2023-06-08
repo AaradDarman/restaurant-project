@@ -21,10 +21,10 @@ const Auth = () => {
   const { authState } = useAuthContext();
 
   useEffect(() => {
-    if (user.user && router.query.forceLogout) {
+    if (user?.user && router.query.forceLogout) {
       dispatch(resetUser());
       dispatch(resetLocalCart());
-    } else if (user.user) {
+    } else if (user?.user) {
       router.replace("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +48,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="relative mb-[56px] flex flex-1 flex-col justify-center  px-6 md:px-8 ">
+    <div className="relative mb-[56px] flex flex-1 flex-col items-center justify-center px-6 md:px-8 ">
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_SITE_NAME} | ورود | ثبت نام`}</title>
       </Head>

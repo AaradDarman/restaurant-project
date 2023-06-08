@@ -4,7 +4,7 @@ import { proxy } from "server/proxy";
 import Cookies from "cookies";
 import { decodeToken } from "utils/token-helper";
 
-const LOGIN_ENDPOINT_PATH = "/user/login";
+const LOGIN_ENDPOINT_PATH = "/user/auth/login";
 
 export default (req: any, res: any) => {
   return new Promise<void>((resolve, reject) => {
@@ -26,13 +26,13 @@ export default (req: any, res: any) => {
       // don't forget the catch the errors
       proxyRes.once("error", reject);
 
-      proxyRes.on("end", () => {
+      proxyRes.on("end", async () => {
         const isSuccess = proxyRes.statusCode === 200;
 
         body = JSON.parse(Buffer.concat(body).toString());
 
         if (isSuccess) {
-          let decodedToken = decodeToken(body.token);
+          let decodedToken = await decodeToken(body.token);
           const cookies = new Cookies(req, res);
           if (decodedToken && (decodedToken as any).exp) {
             cookies.set("authorization", body.token, {

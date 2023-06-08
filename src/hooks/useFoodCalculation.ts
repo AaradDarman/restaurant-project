@@ -40,7 +40,7 @@ const useFoodCalculation = ({
   if (!discount) {
     if (selectedSize && typeof price === "object") {
       let selectedItemPrice =
-        price.find((p) => p.size === selectedSize.label)?.p ?? price[0].p;
+        price.find((p) => p.size === selectedSize)?.p ?? price[0].p;
       return {
         price: selectedItemPrice,
         discountedPrice: selectedItemPrice,
@@ -63,9 +63,9 @@ const useFoodCalculation = ({
       typeof discount === "object"
     ) {
       let selectedItemPrice =
-        price.find((p) => p.size === selectedSize.label)?.p ?? price[0].p;
+        price.find((p) => p.size === selectedSize)?.p ?? price[0].p;
       let selectedItemDiscount =
-        discount.find((d) => d.size === selectedSize.label)?.amount ??
+        discount.find((d) => d.size === selectedSize)?.amount ??
         undefined;
       return {
         price: selectedItemPrice,

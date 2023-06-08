@@ -3,11 +3,11 @@ import { ReactElement } from "react";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 
-import foodslist from "data/foodslist.json";
 import FoodsList from "components/Foods";
 import { TFoodItem } from "interfaces/food.interfaces";
 import IndexLayout from "components/layout/IndexLayout";
 import { NextPageWithLayout } from "./_app";
+import foodsApi from "api/foodsApi";
 
 const Home: NextPageWithLayout<{ foods: Array<TFoodItem> }> = ({ foods }) => {
   return (
@@ -25,10 +25,12 @@ Home.getLayout = function getLayout(page: ReactElement) {
   return <IndexLayout>{page}</IndexLayout>;
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { data } = await foodsApi.getfoods();
+
   return {
     props: {
-      foods: foodslist,
+      foods: data.foods,
     },
   };
 };

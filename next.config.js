@@ -1,9 +1,22 @@
+const { withPlaiceholder } = require("@plaiceholder/next");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  experimental: {
-    scrollRestoration: true,
-  },
+  swcMinify: true,
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(
+  withPlaiceholder({
+    compiler: {
+      styledComponents: true,
+    },
+    images: {
+      domains: ["res.cloudinary.com"],
+    },
+    ...nextConfig,
+  })
+);

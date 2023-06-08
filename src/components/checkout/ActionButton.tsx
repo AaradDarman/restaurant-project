@@ -34,7 +34,7 @@ const ActionButton: FC<
       classes={{
         disabled: `${isLoading ? "!bg-accent-500" : "!bg-white/[0.12]"}`,
       }}
-      onClick={() => router.push("/checkout/payment")}
+      onClick={onClick}
     >
       {typeof ButtonText === "string" ? (
         <Typography variant="h6" className="!flex-1 text-center">

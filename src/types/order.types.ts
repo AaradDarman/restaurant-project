@@ -4,11 +4,18 @@ import { TPaymentType } from "./payment.types";
 
 export type TOrderStatus = "in-progress" | "served" | "canceled";
 
+export type TEatMethod = "سالن" | "بیرون بری";
+
 export type OrderContextContent = {
   handleAddItemToCart: (item: ICartItemProp) => void;
-  handleRemoveItemFromCart: (item: Pick<ICartItemProp, "size" | "_id">) => void;
-  eatMethod: string;
-  setEatMethod: Dispatch<SetStateAction<string>>;
+  handleRemoveItemFromCart: (
+    item: Pick<ICartItemProp, "_id" | "quantity" | "size">
+  ) => void;
+  eatMethod: TEatMethod;
+  setEatMethod: Dispatch<SetStateAction<TEatMethod>>;
   paymentMethod: TPaymentType;
   setPaymentMethod: Dispatch<SetStateAction<TPaymentType>>;
+  handlePlaceOrder: () => void;
+  payBill: (orderId: string) => void;
+  openSuccessPaymentDialog: () => void;
 };

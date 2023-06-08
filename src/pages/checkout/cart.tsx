@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import ActionButton from "components/checkout/ActionButton";
 import OrderContext from "context/OrderContext";
@@ -21,6 +22,7 @@ const Cart = () => {
     cart.totalPrice,
     cart.totalPriceWithDiscount
   );
+  const router = useRouter();
 
   return (
     <div className="flex flex-1 flex-col md:grid md:max-h-[calc(100vh_-_58px)] md:grid-cols-5 md:p-2 xl:p-4">
@@ -37,7 +39,7 @@ const Cart = () => {
         </div>
       ) : (
         <>
-          <div className="md:rounded-md md:border-[1px] md:border-primary-main mb-[220px] flex-1 content-start overflow-y-auto px-2 md:col-span-3 md:mb-0 md:ml-1 md:grid md:flex-[unset] md:grid-cols-4 lg:col-span-4">
+          <div className="mb-[220px] flex-1 content-start overflow-y-auto px-2 md:col-span-3 md:mb-0 md:ml-1 md:grid md:flex-[unset] md:grid-cols-4 md:rounded-md md:border-[1px] md:border-primary-main lg:col-span-4">
             <ItemsList items={cart.items} />
           </div>
           <div className="fixed bottom-0 left-0 right-0 bg-secondary-800 px-1 pb-[60px] md:relative md:bottom-[unset] md:left-[unset] md:right-[unset] md:col-span-2 md:h-fit md:rounded-md md:border-[1px] md:border-primary-main md:bg-transparent md:p-2 md:pb-2 lg:col-span-1">
@@ -71,6 +73,7 @@ const Cart = () => {
               buttonText="ادامه سفارش"
               className="w-full"
               Icon={() => <Icon icon="arrow-left" size={24} />}
+              onClick={() => router.push("/checkout/payment")}
             />
           </div>
         </>

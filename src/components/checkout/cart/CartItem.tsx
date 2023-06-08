@@ -20,20 +20,20 @@ const CartItem: FC<{ item: ICartItemProp }> = ({ item }) => {
     item,
     selectedSize: item.size,
   });
-  const { _id, name, image, quantity, size } = item;
+  const { _id, name, images, quantity, size } = item;
 
   const { handleAddItemToCart, handleRemoveItemFromCart } = useOrderContext();
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    handleAddItemToCart({ _id, name, size, image, quantity, discount, price });
+    handleAddItemToCart({ _id, name, size, images, quantity, discount, price });
   };
 
   const handleRemoveFromBasket = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    handleRemoveItemFromCart({ _id, size });
+    handleRemoveItemFromCart({ _id, size, quantity });
   };
 
   return (
@@ -48,7 +48,7 @@ const CartItem: FC<{ item: ICartItemProp }> = ({ item }) => {
         )}
       >
         <Image
-          src={image}
+          src={images[0]}
           alt="pizza"
           fill
           className={`drop-shadow-2x object-cover duration-700 group-hover:rotate-180`}
@@ -56,7 +56,7 @@ const CartItem: FC<{ item: ICartItemProp }> = ({ item }) => {
       </div>
       <div className="mr-5 flex flex-col items-start justify-evenly">
         <Typography variant="h6" component="h3">
-          {`${name} ${size?.label ?? ""}`}
+          {`${name} ${size ?? ""}`}
         </Typography>
         <div className="flex justify-between sm:mt-6">
           <div className="flex w-full flex-col">

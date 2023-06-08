@@ -9,12 +9,22 @@ import SwiperComponent from "components/shared/Swiper";
 import adsList from "data/head-ads.json";
 import tables from "data/tables.json";
 import { useBookingContext } from "context/booking-context";
-import { convetStringToUrlFormat, convetUrlToStringFormat } from "utils/string-helper";
+import {
+  convetStringToUrlFormat,
+  convetUrlToStringFormat,
+} from "utils/string-helper";
+import { SORT_OPTIONS } from "constants/index";
+import DropDown from "components/shared/DropDown";
+import { IconButton } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
+import useBreakpoints from "hooks/useBreakPoints";
 
 const IndexLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
-  const { tableNumber, category } = router.query;
+  const { tableNumber, category, sortBy } = router.query;
   const { setSelectedTable } = useBookingContext();
+  const { isLg } = useBreakpoints();
 
   useEffect(() => {
     if (tableNumber) {
@@ -23,7 +33,7 @@ const IndexLayout = ({ children }: PropsWithChildren) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableNumber]);
 
-  const handleSortChange = (category: string) => {
+  const handleCategoryChange = (category: string) => {
     if (category === "همه") {
       router.replace("/", undefined, { scroll: false });
     } else {
@@ -34,6 +44,38 @@ const IndexLayout = ({ children }: PropsWithChildren) => {
         undefined,
         { scroll: false }
       );
+    }
+  };
+
+  const handleSortChange = (sortBy: string) => {
+    let { category } = router.query;
+
+    if (convetUrlToStringFormat(sortBy) === "پرفروش ترین") {
+      if (category) {
+        router.replace(`/${category}`, undefined, { scroll: false });
+      } else {
+        router.replace(`/`, undefined, { scroll: false });
+      }
+    } else {
+      if (category) {
+        router.replace(
+          {
+            pathname: `/${category}/s`,
+            query: { sortBy: convetStringToUrlFormat(sortBy) },
+          },
+          undefined,
+          { scroll: false }
+        );
+      } else {
+        router.replace(
+          {
+            pathname: "/s",
+            query: { sortBy: convetStringToUrlFormat(sortBy) },
+          },
+          undefined,
+          { scroll: false }
+        );
+      }
     }
   };
 
@@ -55,10 +97,48 @@ const IndexLayout = ({ children }: PropsWithChildren) => {
           swiperSlideClassName="w-auto shrink-0 block max-h-full"
         />
         {/* Filter Foods Component */}
-        <CategoryFilter
-          value={category ? convetUrlToStringFormat(category as string) : "همه"}
-          onChange={handleSortChange}
-        />
+        <div className="mb-4 flex flex-wrap items-center justify-between">
+          <CategoryFilter
+            value={
+              category ? convetUrlToStringFormat(category as string) : "همه"
+            }
+            onChange={handleCategoryChange}
+          />
+          <DropDown
+            items={SORT_OPTIONS}
+            onChange={handleSortChange}
+            value={convetUrlToStringFormat(sortBy as string)}
+            IconComponent={!isLg ? () => null : undefined}
+            renderValue={
+              !isLg
+                ? () => {
+                    return (
+                      <IconButton className="!text-[19px]">
+                        <FontAwesomeIcon
+                          width={19}
+                          icon={faArrowDownWideShort}
+                        />
+                      </IconButton>
+                    );
+                  }
+                : undefined
+            }
+            sx={
+              !isLg
+                ? {
+                    "&": {
+                      minWidth: 0,
+                    },
+                    "& .MuiInputBase-input.MuiInput-input": {
+                      padding: 0,
+                      paddingRight: 0,
+                    },
+                  }
+                : undefined
+            }
+          />
+        </div>
+
         {children}
       </div>
     </div>

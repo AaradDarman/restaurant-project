@@ -35,7 +35,7 @@ const CategoryFilter: FC<{
           zIndex: 0,
         },
       }}
-      className="sticky top-[58px] z-10 mb-4 bg-inherit py-2"
+      className="sticky top-[58px] z-10 bg-inherit py-2"
     >
       {categories.map((cat, index) => (
         <Tab

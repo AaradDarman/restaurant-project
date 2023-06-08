@@ -6,7 +6,7 @@ import Image from "next/image";
 import clsx from "clsx";
 
 const CartItem: FC<{ item: ICartItemProp }> = ({
-  item: { image, size, quantity },
+  item: { images, size, quantity },
 }) => {
   return (
     <Badge
@@ -36,13 +36,13 @@ const CartItem: FC<{ item: ICartItemProp }> = ({
         )}
       >
         <Image
-          src={image}
+          src={images[0]}
           alt="pizza"
           fill
           className={`drop-shadow-2x object-cover`}
         />
       </div>
-      <Typography variant="caption">{size?.label}</Typography>
+      <Typography variant="caption">{size}</Typography>
     </Badge>
   );
 };

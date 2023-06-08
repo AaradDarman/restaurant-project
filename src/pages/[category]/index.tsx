@@ -2,16 +2,16 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import foodslist from "data/foodslist.json";
-import categories from "data/categories.json";
 import FoodsList from "components/Foods";
 import { TFoodItem } from "interfaces/food.interfaces";
 import {
   convetStringToUrlFormat,
-  convetUrlToStringFormat,
 } from "utils/string-helper";
 import IndexLayout from "components/layout/IndexLayout";
-import { NextPageWithLayout } from "./_app";
+import { NextPageWithLayout } from "../_app";
+import foodsApi from "api/foodsApi";
+import { ParsedUrlQuery } from "querystring";
+import { CATEGORIES } from "constants/index";
 
 const Category: NextPageWithLayout<{ foods: Array<TFoodItem> }> = ({
   foods,
@@ -30,39 +30,37 @@ const Category: NextPageWithLayout<{ foods: Array<TFoodItem> }> = ({
   );
 };
 
+Category.getLayout = function getLayout(page: JSX.Element) {
+  return <IndexLayout>{page}</IndexLayout>;
+};
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = categories.map((category) => ({
+  const paths = CATEGORIES.map((category) => ({
     params: { category: convetStringToUrlFormat(category.label) },
   }));
+
   return {
     paths,
     fallback: false,
   };
 };
 
-Category.getLayout = function getLayout(page: JSX.Element) {
-  return <IndexLayout>{page}</IndexLayout>;
-};
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { category } = context.params as IParams;
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (params?.category && params?.category != "همه") {
-    let foods = foodslist.filter(
-      (food) =>
-        food.category === convetUrlToStringFormat(params?.category as string)
-    );
-
-    return {
-      props: {
-        foods,
-      },
-    };
-  }
+  const { data } = await foodsApi.getfoods({
+    category,
+  });
 
   return {
     props: {
-      foods: foodslist,
+      foods: data.foods,
     },
   };
 };
+
+interface IParams extends ParsedUrlQuery {
+  category: string;
+}
 
 export default Category;

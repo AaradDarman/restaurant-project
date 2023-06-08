@@ -28,6 +28,11 @@ import { useRouter } from "next/router";
 import Icon from "components/shared/Icon";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import foodsApi from "api/foodsApi";
+import foodApi from "api/foodApi";
+import { useOrderContext } from "context/order-context";
+import OrderContext from "context/OrderContext";
+import { NextPageWithLayout } from "pages/_app";
 
 const StyledSwiperComponent = styled(SwiperComponent)`
   .swiper-pagination {
@@ -35,7 +40,7 @@ const StyledSwiperComponent = styled(SwiperComponent)`
   }
 `;
 
-const Food: FC<{ food: TFoodItem }> = ({ food }) => {
+const Food: NextPageWithLayout<{ food: TFoodItem }> = ({ food }) => {
   const { _id, name, description, isOutOfStock, images, sizes } = food;
 
   const [selectedSize, setSelectedSize] = useState<TSize>();
@@ -43,9 +48,9 @@ const Food: FC<{ food: TFoodItem }> = ({ food }) => {
   const { discount, price } = useFoodCalculation({
     item: food,
     selectedSize: selectedSize
-      ? selectedSize
+      ? selectedSize.label
       : sizes?.length
-      ? sizes[0]
+      ? sizes[0].label
       : undefined,
   });
 
@@ -55,10 +60,11 @@ const Food: FC<{ food: TFoodItem }> = ({ food }) => {
   const [swiper, setSwiper] = useState<any>(null);
   // const [cartItem, setCartItem] = useState<any>(null);
   const router = useRouter();
+  const { handleAddItemToCart, handleRemoveItemFromCart } = useOrderContext();
 
   let cartItem = cart.items.find((item) => {
     if (sizes?.length) {
-      if (item._id === _id && isEqual(item.size, selectedSize)) {
+      if (item._id === _id && isEqual(item.size, selectedSize?.label)) {
         return item;
       }
     } else if (item._id === _id) {
@@ -206,25 +212,22 @@ const Food: FC<{ food: TFoodItem }> = ({ food }) => {
           hasItemInCart={!!cart.itemsCount}
           isLoading={cart.status === "loading"}
           onAddToBasketClick={() => {
-            dispatch(
-              addItemToLocalCart({
-                _id,
-                name,
-                size: selectedSize,
-                price,
-                discount,
-                image: images[0],
-              })
-            );
+            handleAddItemToCart({
+              _id,
+              name,
+              size: selectedSize?.label,
+              price,
+              discount,
+              images: images,
+              quantity: 1,
+            });
           }}
           onRemoveFromBasketClick={() => {
-            dispatch(
-              removeItemFromLocalCart({
-                _id,
-                name,
-                size: selectedSize,
-              })
-            );
+            handleRemoveItemFromCart({
+              _id,
+              quantity: 1,
+              size: selectedSize?.label,
+            });
           }}
         />
       </div>
@@ -232,10 +235,17 @@ const Food: FC<{ food: TFoodItem }> = ({ food }) => {
   );
 };
 
+Food.getLayout = function getLayout(page: JSX.Element) {
+  return <OrderContext>{page}</OrderContext>;
+};
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = foodslist.map((f) => ({
-    params: { name: convetStringToUrlFormat(f.name) },
+  const { data } = await foodsApi.getfoodNames();
+
+  const paths = data.names.map((name: string) => ({
+    params: { name: convetStringToUrlFormat(name) },
   }));
+
   return {
     paths,
     fallback: false,
@@ -243,13 +253,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let food = foodslist.find(
-    (food) => food.name === convetUrlToStringFormat(params?.name as string)
+  const { data } = await foodApi.getfood(
+    convetUrlToStringFormat(params?.name as string)
   );
 
   return {
     props: {
-      food,
+      food: data.food,
     },
   };
 };

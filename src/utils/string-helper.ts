@@ -8,10 +8,16 @@ export const shorten = (text: string, maxLength: number) => {
   return ret;
 };
 
-export const convetStringToUrlFormat = (str: string) => {
-  return kebabCase(str);
+export const convetStringToUrlFormat = (str: string | undefined) => {
+  if (str) {
+    return kebabCase(str);
+  }
+  return undefined;
 };
 
-export const convetUrlToStringFormat = (str: string) => {
-  return str.replace(/-/g, " ");
+export const convetUrlToStringFormat = (str: string | undefined) => {
+  if (str) {
+    return str.replace(/-/g, " ");
+  }
+  return undefined;
 };

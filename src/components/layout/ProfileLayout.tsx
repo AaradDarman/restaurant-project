@@ -11,7 +11,7 @@ const ProfileLayout = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex flex-1 flex-col">
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_SITE_NAME} | پروفایل | ${
           router.pathname.includes("recent-orders")

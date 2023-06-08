@@ -6,7 +6,7 @@ import foodslist from "data/liked-foods.json";
 
 const Favorites = () => {
   return (
-    <div className="flex flex-col bg-secondary-main px-6 pb-[72px] md:px-8">
+    <div className="flex flex-1 flex-col bg-secondary-main px-6 pb-[72px] md:px-8">
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_SITE_NAME} | پسندیده ها`}</title>
       </Head>

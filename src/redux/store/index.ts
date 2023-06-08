@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import { combineReducers } from "redux";
 
-import products from "redux/slices/foods";
+import foods from "redux/slices/foods";
 import cart from "redux/slices/cart";
 import { debounce, isEmpty } from "lodash";
 import { loadState, saveState } from "utils/browser-storage-helper";
@@ -17,7 +17,7 @@ import user from "redux/slices/user";
 
 const store = configureStore({
   reducer: {
-    products,
+    foods,
     cart,
     user,
   },
@@ -27,8 +27,7 @@ const store = configureStore({
 
 store.subscribe(
   debounce(() => {
-    // if (isEmpty(store.getState().user?.user)) {
-    if (true) {
+    if (isEmpty(store.getState().user?.user)) {
       saveState(store.getState().cart);
     }
   }, 800)

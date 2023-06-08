@@ -29,6 +29,7 @@ import { muiTheme } from "styles/themes/mui-theme";
 import createEmotionCache from "utils/createEmotionCache";
 import "styles/globals.css";
 import { NextPage } from "next";
+import AuthContext from "context/AuthContext";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -82,9 +83,11 @@ function App({
               <Provider store={store}>
                 <ToastContainer theme="dark" />
                 <CssBaseline />
-                <MainLayout>
-                  {getLayout(<Component {...pageProps} />)}
-                </MainLayout>
+                <AuthContext>
+                  <MainLayout>
+                    {getLayout(<Component {...pageProps} />)}
+                  </MainLayout>
+                </AuthContext>
               </Provider>
             </RTL>
           </ThemeProvider>

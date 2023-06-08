@@ -26,4 +26,5 @@ export type AuthContextContent = {
   handleEditInfo: (
     values: Required<Omit<TUser, "_id" | "profileImage">>
   ) => void;
+  getUserData: () => void;
 };

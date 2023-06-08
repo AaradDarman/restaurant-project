@@ -31,15 +31,15 @@ export type TFoodItem = FoodItemWithoutSize | FoodItemWithSize;
 
 export interface IFoodCalcProp {
   item: Pick<TFoodItem, "price" | "discount">;
-  selectedSize?: TSize;
+  selectedSize?: string;
 }
 
 export interface ICartItemProp {
   _id: string;
   name: string;
   quantity: number;
-  size?: TSize;
-  price: number;
+  size?: string;
   discount?: number;
-  image: string;
+  images: string[];
+  price: number;
 }
