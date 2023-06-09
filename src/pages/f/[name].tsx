@@ -161,7 +161,7 @@ const Food: NextPageWithLayout<{ food: TFoodItem }> = ({ food }) => {
           {description}
         </Typography>
         <div className="mt-auto flex w-full items-center md:mt-0 md:flex-col md:items-start">
-          {sizes?.length && (
+          {!!sizes?.length && (
             <SizeSelector
               sizes={sizes}
               selectedSize={selectedSize}
@@ -248,7 +248,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
