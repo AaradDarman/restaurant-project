@@ -41,7 +41,7 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
   const handleRemoveItemFromCart = (
     item: Pick<ICartItemProp, "_id" | "quantity" | "size">
   ) => {
-    if (isEmpty(user)) {
+    if (isEmpty(user.user)) {
       dispatch(removeItemFromLocalCart(item));
     } else {
       dispatch(removeItemFromDbCart(item));
