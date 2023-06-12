@@ -50,7 +50,7 @@ const IndexLayout = ({ children }: PropsWithChildren) => {
   const handleSortChange = (sortBy: string) => {
     let { category } = router.query;
 
-    if (convetUrlToStringFormat(sortBy) === "پرفروش ترین") {
+    if (convetUrlToStringFormat(sortBy) === "جدید ترین") {
       if (category) {
         router.replace(`/${category}`, undefined, { scroll: false });
       } else {

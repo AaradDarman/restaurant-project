@@ -79,8 +79,17 @@ const Food: NextPageWithLayout<{ food: TFoodItem }> = ({ food }) => {
     if (typeof window != "undefined" && element) {
       element.style.minHeight = window.innerHeight + "px";
     }
+    updateViewCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const updateViewCount = async () => {
+    try {
+      const { status, data } = await foodApi.updateFoodViewCount(_id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (isMd) {

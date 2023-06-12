@@ -84,7 +84,7 @@ const NavItem = ({ item, className }: any) => {
         `relative flex items-center rounded-xl`,
         `[&:not(.active)]:hover:bg-primary-main/20`
       )}
-      href={item.href}
+      href={item.href === "/" ? "/" : "#"}
     >
       {item.icon && item.title === "سبد خرید" ? (
         <Badge
