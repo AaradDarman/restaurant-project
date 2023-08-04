@@ -36,8 +36,7 @@ const BottomNavigation: FC<React.HTMLAttributes<HTMLDivElement>> = ({
             className={`z-[2] px-3 py-4 ${
               router.pathname === "/booking" && "text-accent-600"
             }`}
-            // href="/booking"
-            href={{}}
+            href="/booking"
           >
             <Icon
               icon={`${
@@ -49,8 +48,7 @@ const BottomNavigation: FC<React.HTMLAttributes<HTMLDivElement>> = ({
         </div>
         <div className="box">
           <Link
-            // href="/checkout/cart"
-            href={{}}
+            href="/checkout/cart"
             className="absolute -top-[50px] left-[50%] z-10 -translate-x-[50%] rounded-full bg-accent-main p-2"
           >
             <Icon icon="shopping-bag" size={24} />
@@ -61,8 +59,7 @@ const BottomNavigation: FC<React.HTMLAttributes<HTMLDivElement>> = ({
             className={`z-[2] px-3 py-4 ${
               router.pathname === "/favorites" && "text-accent-600"
             }`}
-            // href="/favorites"
-            href={{}}
+            href="/favorites"
           >
             <Icon
               icon={`${
@@ -75,8 +72,7 @@ const BottomNavigation: FC<React.HTMLAttributes<HTMLDivElement>> = ({
             className={`z-[2] px-3 py-4 ${
               router.pathname.includes("profile") && "text-accent-600"
             }`}
-            // href="/profile/recent-orders"
-            href={{}}
+            href="/profile/recent-orders"
           >
             <Icon
               icon={`${

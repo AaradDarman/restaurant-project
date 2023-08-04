@@ -56,6 +56,10 @@ const Payment = () => {
     table: Yup.object().required("پر کردن این فیلد الزامی می باشد"),
   });
 
+  const ToGoPaymentSchema = Yup.object().shape({
+    table: Yup.object(),
+  });
+
   const initialValues: {
     table: TTable | undefined;
   } = {
@@ -70,7 +74,9 @@ const Payment = () => {
       <Formik
         initialValues={initialValues}
         enableReinitialize={false}
-        validationSchema={PaymentSchema}
+        validationSchema={
+          eatMethod === "بیرون بری" ? ToGoPaymentSchema : PaymentSchema
+        }
         onSubmit={handlePlaceOrder}
       >
         {({ errors, touched, setFieldValue, handleSubmit }) => (

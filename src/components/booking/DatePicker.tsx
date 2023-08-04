@@ -62,7 +62,7 @@ const DatePicker: FC<{
           label={
             <div className="flex h-[55px] flex-col justify-between p-2">
               <span>{day.format("dddd")}</span>
-              <span className="text-[20px]">{day.jDayOfYear()}</span>
+              <span className="text-[20px]">{day.jDate()}</span>
             </div>
           }
           wrapped

@@ -2,7 +2,11 @@ import { ICartItemProp } from "interfaces/food.interfaces";
 import { Dispatch, SetStateAction } from "react";
 import { TPaymentType } from "./payment.types";
 
-export type TOrderStatus = "in-progress" | "served" | "canceled";
+export type TOrderStatus =
+  | "wait-for-pay"
+  | "in-progress"
+  | "served"
+  | "cancelled";
 
 export type TEatMethod = "سالن" | "بیرون بری";
 

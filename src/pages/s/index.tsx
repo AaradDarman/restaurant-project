@@ -12,12 +12,14 @@ import foodsApi from "api/foodsApi";
 
 const Sort: NextPageWithLayout<{ foods: Array<TFoodItem> }> = ({ foods }) => {
   const router = useRouter();
-  const { category } = router.query;
+  const { sortBy } = router.query;
 
   return (
     <>
       <Head>
-        <title>{`${process.env.NEXT_PUBLIC_SITE_NAME} | ${category}`}</title>
+        <title>{`${
+          process.env.NEXT_PUBLIC_SITE_NAME
+        } | ${convetUrlToStringFormat(sortBy as string)}`}</title>
       </Head>
       {/* Foods List */}
       <FoodsList foods={foods} />

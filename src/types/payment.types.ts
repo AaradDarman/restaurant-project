@@ -1,4 +1,4 @@
-export type TPaymentType = "آنلاین" | "حضوری";
+export type TPaymentType = "آنلاین" | "حضوری" | "نقدی" | "کارت خوان";
 
 export type TTransactionDetail = {
   _id: string;
