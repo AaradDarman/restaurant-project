@@ -48,7 +48,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header min-h-[58px] ${
+        className={`header min-h-[57px] ${
           offset > 10 ? "bg-primary-800" : "bg-transparent"
         } ${
           router.pathname.includes("/f/")

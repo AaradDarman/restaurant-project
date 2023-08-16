@@ -58,7 +58,6 @@ const AccountInfo = () => {
             </Avatar>
             <Typography variant="body1">
               {user?.user?.name}
-              حسین عقلایی
             </Typography>
           </div>
           <Button

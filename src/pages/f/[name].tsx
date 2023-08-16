@@ -75,10 +75,10 @@ const Food: NextPageWithLayout<{ food: TFoodItem }> = ({ food }) => {
 
   useEffect(() => {
     setSelectedSize(sizes?.length ? sizes[0] : undefined);
-    const element = document?.getElementById("test");
-    if (typeof window != "undefined" && element) {
-      element.style.minHeight = window.innerHeight + "px";
-    }
+    // const element = document?.getElementById("test");
+    // if (typeof window != "undefined" && element) {
+    //   element.style.minHeight = window.innerHeight + "px";
+    // }
     updateViewCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
