@@ -36,7 +36,7 @@ const AuthContext: FC<PropsWithChildren> = ({ children }) => {
             let path = router.query.returnUrl as string;
             router.replace(path);
           } else {
-            router.replace("/foods");
+            router.replace("/");
           }
         });
     } else {

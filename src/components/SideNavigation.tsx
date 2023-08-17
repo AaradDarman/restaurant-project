@@ -8,12 +8,16 @@ import {
   AccordionDetails,
   AccordionSummary,
   Badge,
+  Button,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import useBreakpoints from "hooks/useBreakPoints";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { resetUser } from "redux/slices/user";
+import { isEmpty } from "lodash";
 
 const activeStyle = `active text-accent-600 after:h-[24px] after:absolute
  after:left-0 after:mr-2 after:block after:w-[6px] after:rounded-r-[6px]
@@ -140,6 +144,19 @@ const NavItem = ({ item, className }: any) => {
 
 const SideNavigation: FC<{ className: string }> = ({ className }) => {
   const { isLg } = useBreakpoints();
+  const router = useRouter();
+  const dispatch = useDispatch<any>();
+  const { user } = useSelector((state: RootState) => state);
+
+  const logout = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+      dispatch(resetUser());
+      router.replace("/auth?returnUrl=/&forceLogout=true");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <aside
       className={`${className} z-[2] flex-col bg-secondary-main text-[14px] lg:w-[180px]`}
@@ -195,6 +212,27 @@ const SideNavigation: FC<{ className: string }> = ({ className }) => {
         ) : (
           <NavItem key={item.title} item={item} className="my-2 px-3 py-2" />
         )
+      )}
+      {isEmpty(user.user) ? null : (
+        <Button
+          variant="text"
+          sx={{
+            color: "text.primary",
+            "& .MuiButton-startIcon": {
+              margin: 0,
+            },
+          }}
+          className={clsx(
+            `relative !my-2 !mt-auto flex items-center !justify-start rounded-xl !px-3 !py-2`,
+            `[&:not(.active)]:hover:bg-primary-main/20`
+          )}
+          onClick={logout}
+          startIcon={
+            <Icon className="icon !ml-2 !mr-0" icon="logout" size={22} />
+          }
+        >
+          <span className="leading-[21px]">خروج</span>
+        </Button>
       )}
     </aside>
   );
