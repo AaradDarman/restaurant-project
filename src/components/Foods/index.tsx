@@ -29,7 +29,7 @@ const FoodsList: FC<{ foods: IUserState["favoriteList"] }> = ({ foods }) => {
                 delay={
                   index <= 3 ? +`0.${index + 1}` : isEven(index) ? 0.2 : 0.1
                 }
-                item={item}
+                item={item as TFoodItem}
                 key={item._id}
               />
             );
