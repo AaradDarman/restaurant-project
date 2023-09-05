@@ -22,13 +22,18 @@ const store = configureStore({
     user,
   },
   devTools: true,
-  preloadedState: { cart: loadState() },
+  preloadedState: loadState(),
 });
 
 store.subscribe(
   debounce(() => {
     if (isEmpty(store.getState().user?.user)) {
-      saveState(store.getState().cart);
+      let { status, ...rest } = store.getState().user;
+      let { status: cartStatus, ...cartRest } = store.getState().cart;
+      saveState({
+        user: { status: "idle", ...rest },
+        cart: { status: "idle", ...cartRest },
+      });
     }
   }, 800)
 );

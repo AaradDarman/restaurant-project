@@ -18,6 +18,7 @@ export const authContext = createContext<AuthContextContent>({
   openAccountInfoDialog: () => {},
   handleEditInfo: () => {},
   getUserData: () => {},
+  handleFav: (item: any) => {},
 });
 
 export const useAuthContext = () => useContext(authContext);

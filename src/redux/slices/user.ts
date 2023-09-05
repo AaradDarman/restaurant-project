@@ -11,6 +11,8 @@ import userApi from "api/userApi";
 import { decodeToken } from "utils/token-helper";
 import { MyKnownError } from "types/error.types";
 import { IOrder } from "interfaces/order.interfaces";
+import { TFoodItem } from "interfaces/food.interfaces";
+import { cleanStorage } from "utils/browser-storage-helper";
 
 export const getOtp = createAsyncThunk<
   { otpCreateDate: string },
@@ -76,10 +78,80 @@ export const getOrders = createAsyncThunk<
 >("user/get-orders", async (_, thunkApi) => {
   try {
     const { data } = await userApi.getOrders();
-    
+
     return {
       orders: data.orders,
     };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
+
+export const addFav = createAsyncThunk<
+  { favoriteList: IUserState["favoriteList"] },
+  Pick<TFoodItem, "_id" | "name" | "images" | "description">,
+  {
+    rejectValue: MyKnownError;
+  }
+>("user/add-fav", async (food, thunkApi) => {
+  try {
+    const { data } = await userApi.addToFavList(food);
+
+    return {
+      favoriteList: data.favoriteList,
+    };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
+
+export const removeFav = createAsyncThunk<
+  { favoriteList: IUserState["favoriteList"] },
+  Pick<TFoodItem, "_id" | "name" | "images" | "description">,
+  {
+    rejectValue: MyKnownError;
+  }
+>("user/remove-fav", async (food, thunkApi) => {
+  try {
+    const { data } = await userApi.removeFromFavList(food);
+
+    return {
+      favoriteList: data.favoriteList,
+    };
+  } catch (error: any) {
+    if (error.response.status != 500) {
+      toast.error(error?.response?.data?.message, {
+        position: "bottom-center",
+        closeOnClick: true,
+      });
+    }
+    return thunkApi.rejectWithValue(error.response.data as MyKnownError);
+  }
+});
+
+export const syncFavListToDb = createAsyncThunk<
+  { favoriteList: IUserState["favoriteList"] },
+  IUserState["favoriteList"],
+  {
+    rejectValue: MyKnownError;
+  }
+>("user/syncFavListToDb", async (favoriteList, thunkApi) => {
+  try {
+    const response = await userApi.syncFavListToDb(favoriteList);
+    await cleanStorage("favList");
+    return { favoriteList: response.data.favoriteList };
   } catch (error: any) {
     if (error.response.status != 500) {
       toast.error(error?.response?.data?.message, {
@@ -95,6 +167,7 @@ const initialState: IUserState = {
   status: "idle",
   otpCreateDate: "",
   orders: [],
+  favoriteList: [],
 };
 
 const userSlice = createSlice({
@@ -105,6 +178,17 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     resetUser: (state) => initialState,
+    addFavToLocalDb: (state, action) => {
+      state.favoriteList?.push(action.payload);
+    },
+    removeFavFromLocalDb: (state, action) => {
+      state.favoriteList = state.favoriteList?.filter(
+        (obj) => obj._id != action.payload._id
+      );
+    },
+    setLocalFavList: (state, action) => {
+      state.favoriteList = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -137,8 +221,30 @@ const userSlice = createSlice({
       })
       .addCase(getOrders.rejected, (state) => {
         state.status = "idle";
+      })
+      .addCase(addFav.fulfilled, (state, action) => {
+        state.favoriteList = action.payload.favoriteList;
+      })
+      .addCase(removeFav.fulfilled, (state, action) => {
+        state.favoriteList = action.payload.favoriteList;
+      })
+      .addCase(syncFavListToDb.fulfilled, (state, action) => {
+        state.favoriteList = action.payload.favoriteList;
+        state.status = "idle";
+      })
+      .addCase(syncFavListToDb.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(syncFavListToDb.rejected, (state) => {
+        state.status = "idle";
       });
   },
 });
-export const { setUser, resetUser } = userSlice.actions;
+export const {
+  setUser,
+  resetUser,
+  addFavToLocalDb,
+  removeFavFromLocalDb,
+  setLocalFavList,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -6,8 +6,9 @@ import { TFoodItem } from "interfaces/food.interfaces";
 import { isEmpty } from "lodash";
 import Image from "next/image";
 import noResultImg from "images/no-result.svg";
+import { IUserState } from "interfaces/auth.interfaces";
 
-const FoodsList: FC<{ foods: Array<TFoodItem> }> = ({ foods }) => {
+const FoodsList: FC<{ foods: IUserState["favoriteList"] }> = ({ foods }) => {
   return (
     <>
       {isEmpty(foods) ? (

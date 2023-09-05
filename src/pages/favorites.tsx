@@ -3,14 +3,20 @@ import Cookies from "cookies";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import foodslist from "data/liked-foods.json";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 const Favorites = () => {
+  const { status, favoriteList } = useSelector(
+    (state: RootState) => state.user
+  );
+
   return (
     <div className="flex flex-1 flex-col bg-secondary-main px-6 pb-[72px] md:px-8">
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_SITE_NAME} | پسندیده ها`}</title>
       </Head>
-      <FoodsList foods={foodslist} />
+      <FoodsList foods={favoriteList} />
     </div>
   );
 };

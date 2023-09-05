@@ -6,4 +6,10 @@ export interface IUserState {
   user?: TUser;
   otpCreateDate: string;
   orders: IOrder[];
+  favoriteList: Array<{
+    _id: string;
+    name: string;
+    images: string[];
+    description: string;
+  }>;
 }

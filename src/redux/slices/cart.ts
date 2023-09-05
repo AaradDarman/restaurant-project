@@ -59,7 +59,7 @@ export const syncCartToDb = createAsyncThunk<
 >("cart/syncCartToDb", async (items, thunkApi) => {
   try {
     const response = await userApi.syncCartToDb(items);
-    await cleanStorage();
+    await cleanStorage('cart');
     return { items: response.data.basket };
   } catch (error: any) {
     if (error.response.status != 500) {

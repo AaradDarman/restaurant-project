@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Chip, Typography } from "@mui/material";
+import { Chip, IconButton, Typography } from "@mui/material";
 import { Variants, motion } from "framer-motion";
 import clsx from "clsx";
 import LinesEllipsis from "react-lines-ellipsis";
@@ -13,6 +13,13 @@ import { numberWithCommas } from "utils/number-helper";
 import { TFoodItem } from "interfaces/food.interfaces";
 import useFoodCalculation from "hooks/useFoodCalculation";
 import { convetStringToUrlFormat } from "utils/string-helper";
+import { addFav, addFavToLocalDb } from "redux/slices/user";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import Icon from "./shared/Icon";
+import { useAuthContext } from "context/auth-context";
+import { RootState } from "redux/store";
 
 const Food: FC<
   { item: TFoodItem } & {
@@ -20,10 +27,14 @@ const Food: FC<
     delay: number;
   }
 > = ({ className, delay, item }) => {
+  const { favoriteList } = useSelector((state: RootState) => state.user);
   const { price, discount, discountedPrice } = useFoodCalculation({
     item,
   });
+  const { handleFav } = useAuthContext();
   const { name, description, isOutOfStock, images } = item;
+
+  let isInFavList = favoriteList.some((obj) => obj._id === item._id);
 
   const cardVariants: Variants = {
     offscreen: {
@@ -110,25 +121,43 @@ const Food: FC<
                   }}
                 />
               )}
-              <div className="flex w-full flex-col items-center">
-                <Typography variant="caption">{`${
-                  discount
-                    ? numberWithCommas(discountedPrice)
-                    : numberWithCommas(price)
-                } تومان`}</Typography>
-                {discount && (
-                  <Typography
-                    variant="caption"
-                    className="text-gray-400 line-through"
-                  >
-                    {numberWithCommas(price)}
-                  </Typography>
-                )}
-              </div>
+              {price ? (
+                <div className="flex w-full flex-col items-center">
+                  <Typography variant="caption">{`${
+                    discount
+                      ? numberWithCommas(discountedPrice)
+                      : numberWithCommas(price)
+                  } تومان`}</Typography>
+                  {discount && (
+                    <Typography
+                      variant="caption"
+                      className="text-gray-400 line-through"
+                    >
+                      {numberWithCommas(price)}
+                    </Typography>
+                  )}
+                </div>
+              ) : null}
             </>
           )}
         </div>
       </Link>
+      <IconButton
+        sx={{
+          // backgroundColor: "secondary.main",
+          position: "absolute",
+          fontSize: "24px",
+        }}
+        // disabled={isLoading}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          let { _id, name, description, images } = item;
+          handleFav({ _id, name, description, images });
+        }}
+      >
+        <Icon icon={isInFavList ? "heart-filled" : "heart"} size={24} />
+      </IconButton>
     </motion.div>
   );
 };

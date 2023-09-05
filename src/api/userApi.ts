@@ -1,6 +1,7 @@
 import { ICartItemProp, TFoodItem } from "interfaces/food.interfaces";
 import http from "./xhr";
 import { ICartState } from "interfaces/order.interfaces";
+import { IUserState } from "interfaces/auth.interfaces";
 
 const getOtp = (phoneNumber: string) => {
   return http.post(`${process.env.NEXT_PUBLIC_SERVICE_URL}/user/auth/get-otp`, {
@@ -47,6 +48,26 @@ const getOrder = (orderNumber: string) => {
   return http.get(`/api/user/orders/${orderNumber}`);
 };
 
+const addToFavList = (food: Pick<TFoodItem, "_id" | "name" | "images">) => {
+  return http.post(`/api/user/add-fav`, {
+    food,
+  });
+};
+
+const removeFromFavList = (
+  food: Pick<TFoodItem, "_id" | "name" | "images">
+) => {
+  return http.post(`/api/user/remove-fav`, {
+    food,
+  });
+};
+
+const syncFavListToDb = (favoriteList: IUserState["favoriteList"]) => {
+  return http.post(`/api/user/favoriteList/sync`, {
+    favoriteList,
+  });
+};
+
 // eslint-disable-next-line
 export default {
   getOtp,
@@ -57,4 +78,7 @@ export default {
   getUserData,
   getOrders,
   getOrder,
+  addToFavList,
+  removeFromFavList,
+  syncFavListToDb,
 };

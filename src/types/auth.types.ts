@@ -27,4 +27,5 @@ export type AuthContextContent = {
     values: Required<Omit<TUser, "_id" | "profileImage">>
   ) => void;
   getUserData: () => void;
+  handleFav: (item: any) => void;
 };

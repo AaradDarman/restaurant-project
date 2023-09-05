@@ -1,7 +1,10 @@
+import { IUserState } from "interfaces/auth.interfaces";
 import { ICartState } from "interfaces/order.interfaces";
 
-const KEY = "cart";
-export const loadState = (): ICartState | undefined => {
+const KEY = "localDb";
+export const loadState = ():
+  | { cart: ICartState; user: IUserState }
+  | undefined => {
   try {
     const serializedState = localStorage.getItem(KEY);
     if (!serializedState) return undefined;
@@ -20,9 +23,18 @@ export const saveState = async (state: any) => {
   }
 };
 
-export const cleanStorage = async () => {
+export const cleanStorage = async (key: "cart" | "favList") => {
   try {
-    localStorage.removeItem(KEY);
+    const serializedState = localStorage.getItem(KEY);
+    if (serializedState) {
+      let parsedState = JSON.parse(serializedState);
+      localStorage.removeItem(KEY);
+      if (key === "cart") {
+        localStorage.setItem(KEY, JSON.stringify({ user: parsedState.user }));
+      } else {
+        localStorage.setItem(KEY, JSON.stringify({ cart: parsedState.cart }));
+      }
+    }
   } catch (e) {
     // Ignore
   }
