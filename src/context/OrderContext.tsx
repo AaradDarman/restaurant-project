@@ -19,6 +19,7 @@ import { TEatMethod } from "types/order.types";
 import { useBookingContext } from "./booking-context";
 import SuccessPaymentDialog from "components/checkout/SuccessPaymentDialog";
 import { toast } from "react-toastify";
+import LoadingComponent from "components/shared/LoadingComponent";
 
 const OrderContext: FC<PropsWithChildren> = ({ children }) => {
   const { cart, user } = useSelector((state: RootState) => state);
@@ -28,6 +29,8 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const { selectedTable } = useBookingContext();
   const [isSuccessPaymentDialogOpen, setIsSuccessPaymentDialogOpen] =
+    useState(false);
+  const [paymentIsLoading, setPaymentIsLoading] =
     useState(false);
 
   const handleAddItemToCart = (item: ICartItemProp) => {
@@ -49,7 +52,7 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handlePlaceOrder = async () => {
-    // setPaymentIsLoading(true);
+    setPaymentIsLoading(true);
     try {
       const { data, status } = await orderApi.placeOrder({
         paymentMethod,
@@ -59,10 +62,10 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
       });
       if (status === 200) {
         router.push(data.paymentUrl);
-        // setPaymentIsLoading(false);
+        setPaymentIsLoading(false);
       }
     } catch (error: any) {
-      // setPaymentIsLoading(false);
+      setPaymentIsLoading(false);
       console.log(error);
       if (error.response.status != 500) {
         toast.error(error?.response?.data?.message, {
@@ -74,7 +77,7 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const payBill = async (orderId: string) => {
-    // setPaymentIsLoading(true);
+    setPaymentIsLoading(true);
     try {
       const { data, status } = await orderApi.payBill({
         orderId: orderId,
@@ -82,10 +85,10 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
       });
       if (status === 200) {
         router.push(data.paymentUrl);
-        // setPaymentIsLoading(false);
+        setPaymentIsLoading(false);
       }
     } catch (error: any) {
-      // setPaymentIsLoading(false);
+      setPaymentIsLoading(false);
       console.log(error);
       if (error.response.status != 500) {
         toast.error(error?.response?.data?.message, {
@@ -126,6 +129,7 @@ const OrderContext: FC<PropsWithChildren> = ({ children }) => {
         isOpen={isSuccessPaymentDialogOpen}
         onClose={closeSuccessPaymentDialog}
       />
+      <LoadingComponent show={paymentIsLoading} />
     </orderContext.Provider>
   );
 };
