@@ -27,13 +27,13 @@ const CartItem: FC<{ item: ICartItemProp }> = ({ item }) => {
   const handleAddToBasket = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    handleAddItemToCart({ _id, name, size, images, quantity, discount, price });
+    handleAddItemToCart({ _id, name, size, images, quantity:1, discount, price });
   };
 
   const handleRemoveFromBasket = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    handleRemoveItemFromCart({ _id, size, quantity });
+    handleRemoveItemFromCart({ _id, size, quantity:1 });
   };
 
   return (
